@@ -1,18 +1,31 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.cx2002.autos</id>
-    <name>auto-s</name>
+    <name>Simple-SPEL-Completion</name>
     <vendor>cx2002</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-
+<depends>com.intellij.java</depends>
     <resource-bundle>messages.MyBundle</resource-bundle>
 
+    
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.cx2002.autos.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <completion.confidence order="before javaSkipAutopopupInStrings" implementationClass="com.svwh.autos.confidence.MyCompletionConfidence"
+                               language="JAVA"/>
+        <completion.contributor order="first" implementationClass="com.svwh.autos.contributor.AutoInspect" language="JAVA"/>
+
+        <psi.referenceContributor order="first" implementation="com.svwh.autos.reference.MyReferenceContributor" language="JAVA"/>
+        <annotator  implementationClass="com.svwh.autos.annotator.ReferenceAnnotator" language="JAVA"/>
+
+        <postStartupActivity implementation="com.svwh.autos.startup.StartUpActivity" />
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.cx2002.autos.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+
     </applicationListeners>
+    <actions>
+        <action id="HelloTest" class="com.svwh.autos.action.HelloTest" text="Hello" description="Hello测试">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>
